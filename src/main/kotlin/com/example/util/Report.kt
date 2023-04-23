@@ -44,7 +44,7 @@ class Report(
     }
 
     fun htmlTable(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Result>>) {
-        line(htmlTableString(legend, data))
+        text(htmlTableString(legend, data))
     }
 
     private fun htmlTableString(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Result>>): String {
@@ -65,7 +65,7 @@ class Report(
             sb.append("  <tr>\n")
             sb.append("    <th>$rowKey</th>\n") // Header cell in the first column
             columnHeaders.forEach { columnHeader ->
-                val count = data[rowKey]?.get(columnHeader)?.count
+                val count = data[rowKey]?.get(columnHeader)?.duration?.let { "%.5f".format(it) } ?: ""
                 sb.append("    <td>$count</td>\n")
             }
             sb.append("  </tr>\n")

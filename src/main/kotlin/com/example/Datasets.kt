@@ -69,7 +69,7 @@ fun alternatingDataset(size: Int): Sequence<Int> = sequence {
  * @return A sequence of integers representing the dataset with repeated values.
  */
 fun repeatingDataset(size: Int, repetitions: Int, range: IntRange = 1..10): Sequence<Int> = sequence {
-    for (i in 1..size) {
+    for (i in 1..size / repetitions) {
         val value = range.random()
         repeat(repetitions) {
             yield(value)

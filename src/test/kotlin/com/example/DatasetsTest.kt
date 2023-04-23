@@ -29,10 +29,10 @@ class DatasetsTest {
     @Test
     fun `should generate repeating dataset`() {
         // when
-        val actual = repeatingDataset(5, 3, 1..10).toList()
+        val actual = repeatingDataset(10, 2, 1..10).toList()
         // then
         assertTrue(actual.all { it in 1..10 })
-        assertEquals(15, actual.size)
+        assertEquals(10, actual.size)
     }
 
     @Test
