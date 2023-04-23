@@ -1,5 +1,6 @@
 package com.example.util
 
+import com.example.Result
 import java.io.File
 
 class Report(
@@ -11,6 +12,11 @@ class Report(
     @Synchronized
     fun text(text: String) {
         "$text\n".also { data += it + "\n" }.also { println(it) }
+    }
+
+    @Synchronized
+    fun line(text: String) {
+        text.also { data += it + "\n" }.also { println(it) }
     }
 
     fun h1(text: String) {
@@ -37,30 +43,35 @@ class Report(
         text("---")
     }
 
-    fun sql(sql: String) {
-        sql(listOf(sql))
+    fun htmlTable(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Result>>) {
+        line(htmlTableString(legend, data))
     }
 
-    fun sql(sql: List<String>) {
-        val block = "```sql\n${sql.joinToString(";\n")};\n```"
-        text(block)
-    }
-
-    fun sql(sql: List<String>, actor: String) {
-        sql(sql, actor, null)
-    }
-
-    fun sql(sql: List<String>, actor: String, result: String?) {
-        var block = "```sql\n"
-        if (actor.isNotBlank()) {
-            block += "-- $actor:\n"
+    private fun htmlTableString(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Result>>): String {
+        val sb = StringBuilder()
+        sb.append("<table>\n")
+        // Get a list of unique inner keys (column headers)
+        val columnHeaders = data.values.flatMap { it.keys }.toSet()
+        // Generate the first row with header column
+        sb.append("  <tr>\n")
+        sb.append("    <th><i>$legend</i></th>\n") // Legend at the beginning of the header row
+        columnHeaders.forEach { columnHeader ->
+            val header = columnHeader.split(" ").joinToString("<br/>") // Minimize width
+            sb.append("    <th>$header</th>\n")
         }
-        block += sql.joinToString(";\n")
-        if (result?.isNotBlank() == true) {
-            block += "\n-- Result: $result"
+        sb.append("  </tr>\n")
+        // Generate the rest of the rows
+        data.keys.forEach { rowKey ->
+            sb.append("  <tr>\n")
+            sb.append("    <th>$rowKey</th>\n") // Header cell in the first column
+            columnHeaders.forEach { columnHeader ->
+                val count = data[rowKey]?.get(columnHeader)?.count
+                sb.append("    <td>$count</td>\n")
+            }
+            sb.append("  </tr>\n")
         }
-        block += "\n```"
-        text(block)
+        sb.append("</table>")
+        return sb.toString()
     }
 
     @Synchronized
