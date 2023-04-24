@@ -31,23 +31,11 @@ Various datasets are used to test the Tree implementation, and to test the Sorti
 
 ## How to build and run
 
-Start up Docker containers
-
-```shell script
-docker-compose up -d
-```
-
-Build and run demo application (Requires Java 17+)
+Build and run demo application (Requires Java 11+)
 
 ```shell script
 ./gradlew build && \
-java -jar build/quarkus-app/quarkus-run.jar
-```
-
-You can also run application in dev mode that enables live coding using:
-
-```shell script
-./gradlew quarkusDev
+java -jar build/libs/hsa19-1.0-SNAPSHOT.jar
 ```
 
 ## Results and Conclusions
