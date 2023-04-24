@@ -24,8 +24,15 @@ fun countingSort(input: Collection<Int>): List<Int> {
     val (min, max) = input.fold(first to first) { (currMin, currMax), value ->
         minOf(currMin, value) to maxOf(currMax, value)
     }
-    val counts = input.groupingBy { it }.eachCount()
-    return (min..max).asSequence()
-        .flatMap { value -> List(counts[value] ?: 0) { value } }
-        .toList()
+    val counts = IntArray(max - min + 1)
+    for (value in input) {
+        counts[value - min]++
+    }
+    val output = mutableListOf<Int>()
+    for (i in counts.indices) {
+        for (j in 0 until counts[i]) {
+            output.add(i + min)
+        }
+    }
+    return output
 }

@@ -1,6 +1,5 @@
 package com.example.util
 
-import com.example.Result
 import java.io.File
 
 class Report(
@@ -43,11 +42,11 @@ class Report(
         text("---")
     }
 
-    fun htmlTable(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Result>>) {
+    fun htmlTable(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Double>>) {
         text(htmlTableString(legend, data))
     }
 
-    private fun htmlTableString(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Result>>): String {
+    private fun htmlTableString(legend: String, data: LinkedHashMap<String, LinkedHashMap<String, Double>>): String {
         val sb = StringBuilder()
         sb.append("<table>\n")
         // Get a list of unique inner keys (column headers)
@@ -65,7 +64,7 @@ class Report(
             sb.append("  <tr>\n")
             sb.append("    <th>$rowKey</th>\n") // Header cell in the first column
             columnHeaders.forEach { columnHeader ->
-                val count = data[rowKey]?.get(columnHeader)?.duration?.let { "%.5f".format(it) } ?: ""
+                val count = data[rowKey]?.get(columnHeader)?.let { "%.5f".format(it) } ?: ""
                 sb.append("    <td>$count</td>\n")
             }
             sb.append("  </tr>\n")

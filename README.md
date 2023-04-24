@@ -5,17 +5,29 @@ Data Structures and Algorithms
 
 ## Test project setup
 
-The demo is written in Kotlin and uses docker-compose to run MySQL and logging services.
+The demo is written in Kotlin and contains custom implementation of the Tree and Sorting algorithms.
 
-The `com.example.DemoKt.runDemo` function is used to run load against the MySQL database while applying different slow query log settings.
-
-The [docker-compose.yaml](docker-compose.yaml) file contains two setups for logging: ELK and Graylog.
-
-There are two filebeat services that are used to send logs to the logging services. Their configurations are located in the [config](config) directory, as well as the configuration for the MySQL service.
-
-The MySQL service writes logs into mounted volume, which is then read by the filebeat service.
+The `com.example.DemoKt.runDemo` function is used to run benchmarks for the algorithms.
 
 The summary of the results is located in the [REPORT.md](reports/REPORT.md) file.
+
+### Tree implementation
+
+The tree implementation is located in the [AaTree.kt](src/main/kotlin/com/example/AaTree.kt) file.
+
+This is a simplified version of the Black-Red tree that uses levels instead of colors and only two balancing operations.
+
+Additional information on the Wikipedia page: [AA Tree](https://en.wikipedia.org/wiki/AA_tree)
+
+### Sorting algorithm
+
+The sorting algorithm is located in the [CountingSort.kt](src/main/kotlin/com/example/CountingSort.kt) file.
+
+### Datasets
+
+The test datasets generator functions are located in the [DataSets.kt](src/main/kotlin/com/example/Datasets.kt) file.
+
+Various datasets are used to test the Tree implementation, and to test the Sorting algorithm only the Random dataset is used.
 
 ## How to build and run
 
@@ -40,14 +52,12 @@ You can also run application in dev mode that enables live coding using:
 
 ## Results and Conclusions
 
-As seen in the [REPORT.md](reports/REPORT.md), in my setup there was no significant impact on the performance of the database when the slow query log was enabled and even when the threshold was set to 0.
+The [REPORT.md](reports/REPORT.md) contains tables with the results of the benchmarks. Charts can be found in the [Spreadsheet](https://docs.google.com/spreadsheets/d/13pbKhG1CDDi8sM9jNHGe-5fmxqrJU_c935q5E8210K0/edit?usp=sharing).
 
-Only a very minor impact was observed.
+### AA Tree
 
-### Graylog dashboard
+The AA Tree shows logarithmic complexity for all datasets, with worst case performance for the Random dataset.
 
-![Graylog dashboard](reports/graylog.png)
+### Counting Sort
 
-### ELK dashboard
-
-![ELK dashboard](reports/elk.png)
+The Counting Sort appears to be very fast for datasets with small spread (range of values), but its performance degrades quickly as the range of values increases.

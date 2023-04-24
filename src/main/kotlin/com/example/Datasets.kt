@@ -25,14 +25,17 @@ fun descendingDataset(size: Int): Sequence<Int> = sequence {
 
 /**
  * Generates a lazily evaluated sequence of random integers within a specified range.
+ * The resulting dataset is guaranteed to contain the minimum and maximum values.
  *
  * @param size the number of integers to generate.
  * @param min the minimum value of the integers to generate (inclusive).
  * @param max the maximum value of the integers to generate (inclusive).
  * @return a Sequence<Int> object that generates size random integers within the specified range.
  */
-fun randomDataset(size: Int, min: Int = Int.MIN_VALUE, max: Int = Int.MAX_VALUE): Sequence<Int> = sequence {
-    for (i in 1..size) yield((min..max).random())
+fun randomDataset(size: Int, min: Int = 1, max: Int = Int.MAX_VALUE): Sequence<Int> = sequence {
+    yield(min)
+    for (i in 1..size - 2) yield((min..max).random())
+    yield(max)
 }
 
 /**
